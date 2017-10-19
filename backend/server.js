@@ -37,6 +37,7 @@ console.log('listening port: ' + port);
 // TODO: Review error handling and return data.
 // TODO: Password should be crypted.
 // TODO: Check whether email already exists
+// TODO: input validation should be performed in backend too?
 /**
  * @return token(id)
  */
@@ -66,7 +67,8 @@ router.route('/user/all')
         });
     });
 
-//TODO: handle email upper and lower cases
+// TODO: handle email upper and lower cases
+// TODO: input validation should be performed in backend too?
 /**
  * Returns for each case
  * err: return err page
@@ -83,7 +85,7 @@ router.route('/user/login')
                password unmatch: return message
                else: return user token(id)
             */
-            if(err)
+            if (err)
                 res.send(err);
             else if (user == null || req.body.password != user.password)
                 res.send({ message: 'Wrong user id or password.' });
@@ -92,10 +94,51 @@ router.route('/user/login')
         });
     });
 
-// router.route('/data/nextidentifier')
-//     .post((req, res) => {
+// TODO: fix CastError for ObjectID.
+// When token is defined but not proper format of _id, then cause castError
+// But not terminate Node.js
+router.route('/data/nextidentifier')
+    .post((req, res) => {
+        User.findOne({'_id' : req.body.token }, (err, user) => {
+            if (err)
+                res.send(err);
+            else if (user == null)
+                res.send({ message: 'Please login first.' });
+            else {
+                user.identifier = user.identifier + 1;
+                user.save(err => {
+                    if(err)
+                        res.send(err);
+                    res.json(user.identifier);
+                });
+            }
+        });
+    });
 
-//     })
+// TODO: fix CastError for ObjectID.
+// When token is defined but not proper format of _id, then cause castError
+// But not terminate Node.js
+router.route('/data/resetidentifier')
+    .post((req, res) => {
+        User.findOne({'_id' : req.body.token }, (err, user) => {
+            if (err)
+                res.send(err);
+            else if (user == null)
+                res.send({ message: 'Please login first.' });
+            else if (req.body.resetval == undefined) 
+                res.send({ message: 'Reset value is not set.'});
+            else if (req.body.resetval <= 0)
+                res.send({ message: 'Reset value has to be positive number.'});
+            else {
+                user.identifier = req.body.resetval;
+                user.save(err => {
+                    if(err)
+                        res.send(err);
+                    res.json(user.identifier);
+                });
+            }
+        });
+    });
 
 router.route('/users/:user_id')
     // get a user by mongo id
