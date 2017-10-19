@@ -167,39 +167,3 @@ router.route('/data/resetidentifier')
             }
         });
     });
-
-router.route('/users/:user_id')
-    // get a user by mongo id
-    .get((req, res) => {
-        console.log(req.params.user_id);
-        User.findById(req.params.user_id, (err, user) =>{
-            if(err)
-                res.send(err);
-            res.json(user);
-        });
-    })
-    // update an user's identifier
-    .put((req, res) => {
-        User.findById(req.params.user_id, (err, user) =>{
-            if(err)
-                res.send(err);
-            user.identifier = user.identifier + 1;
-            
-            user.save(err => {
-                if(err)
-                    res.send(err);
-                res.json({ message: 'Incremented identifier'});
-            });
-        });
-    })
-    // delete an user's identifier
-    .delete((req, res) => {
-        User.remove({
-            _id: req.params.user_id
-        }, (err, user) => {
-            if(err)
-                res.send(err);
-            res.json({ message: 'deleted user'});
-        });
-    });
-
