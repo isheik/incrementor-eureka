@@ -1,15 +1,14 @@
 // load packages
 var express = require('express');
+var settings = require('./setting');
 var app = express();
 var bodyParser = require('body-parser');
 
 // connect DB
-// TODO: change connect method to modern one
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/backend');
-// var promise = mongoose.connect('mongodb://localhost/backend', {
-//     useMongoClient: true
-// });
+mongoose.connect('mongodb://' + settings.host + '/' + settings.db, {
+    useMongoClient: true, promiseLibrary:global.Promise
+});
 
 var User = require('./models/user');
 
@@ -19,26 +18,19 @@ app.use(bodyParser.json());
 // TODO: Remove this if deploy to somewhere
 app.use((req, res, next) => {
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-
+    res.setHeader('Access-Control-Allow-Origin', 'http://' + settings.host + ':' + settings.acao_port);
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
     // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-
     // Pass to next layer of middleware
     next();
 });
 
-
-
-
-var port = process.env.PORT || 1337;
+var port = process.env.PORT || settings.port;
 
 var router = express.Router();
 
@@ -67,14 +59,18 @@ router.route('/user/register')
     .post((req, res) => {
         var user = new User();
 
+        // user.data.type = "user";
         user.mail = req.body.mail;
+        // user.mail = req.body.mail;
         user.password = req.body.password;
         user.identifier = 0;
 
         user.save((err, user) => {
             if(err)
                 res.send(err);
-            res.json(user._id);
+
+            res.setHeader('Content-Type', 'application/vnd.api+json');
+            res.status(200).json(user);
         });
     });
 
@@ -84,8 +80,8 @@ router.route('/user/all')
         User.find((err, users) => {
             if(err)
                 res.send(err);
-            console.log(req.params);
-            res.json(users);
+            res.setHeader('Content-Type', 'application/vnd.api+json');
+            res.status(200).json(users);
         });
     });
 
@@ -104,9 +100,10 @@ router.route('/user/login')
             if (err)
                 res.send(err);
             else if (user == null || req.body.password != user.password)
-                res.send({ message: 'Wrong user id or password.' });
+                res.status(404).send('Wrong user id or password.');
             else
-                res.json(user._id);
+                // res.setHeader('Content-Type', 'application/vnd.api+json');
+                res.status(200).json(user._id);
         });
     });
 
@@ -118,7 +115,8 @@ router.route('/data/currentidentifier')
             else if (user == null)
                 res.send({ message: 'Please login first.' });
             else 
-                res.json(user.identifier);
+                // res.setHeader('Content-Type', 'application/vnd.api+json');
+                res.status(200).json(user.identifier);
         });
     });
 
@@ -137,7 +135,9 @@ router.route('/data/nextidentifier')
                 user.save(err => {
                     if(err)
                         res.send(err);
-                    res.json(user.identifier);
+
+                    // res.setHeader('Content-Type', 'application/vnd.api+json');
+                    res.status(200).json(user.identifier);
                 });
             }
         });
@@ -162,7 +162,8 @@ router.route('/data/resetidentifier')
                 user.save(err => {
                     if(err)
                         res.send(err);
-                    res.json(user.identifier);
+                    // res.setHeader('Content-Type', 'application/vnd.api+json');
+                    res.status(200).json(user.identifier);
                 });
             }
         });

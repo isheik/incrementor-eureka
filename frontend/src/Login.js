@@ -19,6 +19,7 @@ class Login extends React.Component {
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
+                // if(res.)
                 store.set('token', res.body);
                 console.log(store.get('token'));
             });

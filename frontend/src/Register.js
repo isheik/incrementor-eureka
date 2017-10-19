@@ -15,10 +15,12 @@ class Register extends React.Component {
         // let password = this.state.password;
         request
             .post('http://localhost:1337/api/user/register')
+            // .set('Content-Type', 'application/vnd.api+json')
             .set('Content-Type', 'application/x-www-form-urlencoded')
+            // .send({ mail: this.state.mail, password: this.state.password})
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
-                console.log(res.body);
+                console.log(res.body._id);
             });
     }
     handleMailChange = (e) => {
