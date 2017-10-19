@@ -41,10 +41,11 @@ router.route('/users')
         user.password = req.body.password;
         user.identifier = 1;
 
-        user.save(err => {
+        user.save((err, user) => {
             if(err)
                 res.send(err);
-            res.json({ message: 'User created.' });
+            // return message and token(id) when succefully registered
+            res.json({ message: 'User created.', token: user._id });
         });
     })
     .get((req, res) => {
