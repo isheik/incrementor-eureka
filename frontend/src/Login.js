@@ -1,5 +1,6 @@
 import React from "react";
 import request from "superagent";
+import store from "store";
 
 // TODO: change hostname and port for post
 // TODO: take a look fdsafa case
@@ -11,12 +12,15 @@ class Login extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
+        // TODO: need to implement error handling
+        // TODO: take care of error case (currently error msg returend but should not store it)
         request
             .post('http://localhost:1337/api/user/login')
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
-                console.log(res.body);
+                store.set('token', res.body);
+                console.log(store.get('token'));
             });
     }
     handleMailChange = (e) => {

@@ -110,6 +110,18 @@ router.route('/user/login')
         });
     });
 
+router.route('/data/currentidentifier')
+    .post((req, res) => {
+        User.findOne({'_id' : req.body.token }, (err, user) => {
+            if (err)
+                res.send(err);
+            else if (user == null)
+                res.send({ message: 'Please login first.' });
+            else 
+                res.json(user.identifier);
+        });
+    });
+
 // TODO: fix CastError for ObjectID.
 // When token is defined but not proper format of _id, then cause castError
 // But not terminate Node.js

@@ -17,6 +17,9 @@ const SideMenu = () => (
                 <li>
                     <Link to='/Register'>Register</Link>
                 </li>
+                <li>
+                    <Link to='/Manipulate'>Set or Get identifier</Link>
+                </li>
             </ul>
         </nav>
     </header>
