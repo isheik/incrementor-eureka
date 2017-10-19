@@ -1,9 +1,9 @@
 import React from "react";
 import request from "superagent";
 
-// TODO: change hostname and port for post
-// TODO: take a look fdsafa case
-class Login extends React.Component {
+// TODO: input validation
+// TODO: !!!!introduce local storage!!!!!
+class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {mail: "", password: ""};
@@ -11,8 +11,10 @@ class Login extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
+        // let mail = this.state.mail;
+        // let password = this.state.password;
         request
-            .post('http://localhost:1337/api/user/login')
+            .post('http://localhost:1337/api/user/register')
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
@@ -33,7 +35,7 @@ class Login extends React.Component {
         return (
             <div>
                 <form action="" method="post">
-                    <p>Login </p>
+                    <p>Register </p>
                     <p>mail</p>
                     {/* <input type="text" name="mail"/> */}
                     <input type="text" value={this.state.mail} name="mail" onChange={this.handleMailChange}/>
@@ -47,4 +49,4 @@ class Login extends React.Component {
     }
 };
 
-export default Login;
+export default Register;

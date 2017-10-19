@@ -16,6 +16,28 @@ var User = require('./models/user');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// TODO: Remove this if deploy to somewhere
+app.use((req, res, next) => {
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+
+
+
 var port = process.env.PORT || 1337;
 
 var router = express.Router();
@@ -79,12 +101,6 @@ router.route('/user/all')
 router.route('/user/login')
     .post((req, res) => {
         User.findOne({ 'mail' : req.body.mail }, (err, user) => {
-            /* 
-               err: return err page
-               no user found OR
-               password unmatch: return message
-               else: return user token(id)
-            */
             if (err)
                 res.send(err);
             else if (user == null || req.body.password != user.password)

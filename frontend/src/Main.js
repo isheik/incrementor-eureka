@@ -3,6 +3,7 @@ import { Redirect, Switch, Route } from 'react-router-dom';
 import Home from "./Home";
 import Test from "./Test";
 import Login from "./Login";
+import Register from "./Register";
 
 const Main = () => (
     <main>
@@ -11,6 +12,7 @@ const Main = () => (
             <Route exact path='/' component={Home}/>
             <Route path='/test' component={Test}/>
             <Route path='/login' component={Login}/>
+            <Route path='/register' component={Register}/>
         </Switch>
     </main>
 );
