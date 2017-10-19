@@ -1,3 +1,3 @@
 exports.port = 1337;
 exports.host = 'localhost';
-exports.db = 'incrementerdb';
+exports.db = 'eureka_db';
