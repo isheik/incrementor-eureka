@@ -22,13 +22,26 @@ class Manipulate extends React.Component {
                 console.log(res.body);
             });
     }
-    handleGetSubmit = (e) => {
+    handleCurrentSubmit = (e) => {
         e.preventDefault();
 
         // TODO: need to implement error handling
         // TODO: take care of error case (currently error msg returend but should not store it)
         request
             .post('http://localhost:1337/api/data/currentidentifier')
+            .set('Content-Type', 'application/x-www-form-urlencoded')
+            .send({ token: store.get('token')})
+            .end((err, res) => {
+                console.log(res.body);
+            });
+    }
+    handleNextSubmit = (e) => {
+        e.preventDefault();
+
+        // TODO: need to implement error handling
+        // TODO: take care of error case (currently error msg returend but should not store it)
+        request
+            .post('http://localhost:1337/api/data/nextidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
             .send({ token: store.get('token')})
             .end((err, res) => {
@@ -56,7 +69,11 @@ class Manipulate extends React.Component {
                 </form>
                 <form action="" method="post">
                     <p>Get current identifier</p>
-                    <input type="submit" onClick={this.handleGetSubmit}/>
+                    <input type="submit" onClick={this.handleCurrentSubmit}/>
+                </form>
+                <form action="" method="post">
+                    <p>Get next identifier</p>
+                    <input type="submit" onClick={this.handleNextSubmit}/>
                 </form>
             </div>
         );

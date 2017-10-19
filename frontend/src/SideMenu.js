@@ -9,9 +9,6 @@ const SideMenu = () => (
                     <Link to='/'>Home</Link>
                 </li>
                 <li>
-                    <Link to='/test'>Test</Link>
-                </li>
-                <li>
                     <Link to='/Login'>Login</Link>
                 </li>
                 <li>

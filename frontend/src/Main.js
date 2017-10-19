@@ -11,7 +11,6 @@ const Main = () => (
         <Switch>
             {window.location.pathname.includes('index.html') && <Redirect to="/" />}
             <Route exact path='/' component={Home}/>
-            <Route path='/test' component={Test}/>
             <Route path='/login' component={Login}/>
             <Route path='/register' component={Register}/>
             <Route path='/manipulate' component={Manipulate}/>
