@@ -11,6 +11,9 @@ const SideMenu = () => (
                 <li>
                     <Link to='/test'>Test</Link>
                 </li>
+                <li>
+                    <Link to='/Login'>Login</Link>
+                </li>
             </ul>
         </nav>
     </header>
