@@ -54,11 +54,10 @@ npm start
 * http://localhost:1337/api/data/nextidentifier
 *token can be obtained through login*
 
-
 ### Assumptions
 * User email address should be unique in this system, so registering the same email is not allowed.
 * Invalid email address form is not allowed toregister in this system.
 * If necessary, logout feature is implemented in consumer side. (The frontend SAP has it.)
 
 ### Known Issues
-* The 
+* This service has not been able to follow JSON API specs very well.
