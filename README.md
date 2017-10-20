@@ -53,7 +53,7 @@ npm start
 *token can be obtained through login*
 
 ### Reset identifier (Secured. Require POST param: resetval, token)
-* http://localhost:1337/api/data/nextidentifier
+* http://localhost:1337/api/data/resetidentifier
 
 *token can be obtained through login*
 
