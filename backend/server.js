@@ -12,6 +12,7 @@ mongoose.connect('mongodb://' + settings.host + '/' + settings.db, {
     useMongoClient: true, promiseLibrary:global.Promise
 });
 
+// load data schema
 var User = require('./models/user');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// set the port number for WEB APIs
 var port = process.env.PORT || settings.port;
 
 var router = express.Router();
@@ -46,10 +48,27 @@ router.get('/', (req, res) => {
 
 app.use('/api', router);
 
+// start listening the port
 app.listen(port);
 console.log('listening port: ' + port);
 
 // TODO: Password should be crypted.
+/**
+ * router for user registration. Does not allow to register
+ * the same email address and email is evaluated as case insensitive
+ * 
+ * Response status
+ *  - 200 success
+ *  - 400 user already exists
+ *  - 404 email address form is invalid
+ * 
+ * @param req request
+ *            expect the following POST params
+ *              - mail the email address to register
+ *              - password the user password to register
+ *        res response
+ * @return token  the API key (user id) used for call other APIs
+ */
 router.route('/user/register')
     .post((req, res) => {
         let lowerMail = lowerCase(req.body.mail);
@@ -81,6 +100,20 @@ router.route('/user/register')
         });
    });
 
+/**
+ * router for user login. 
+ * 
+ * Response status
+ *  - 200 success
+ *  - 404 user does not exists or password is wrong
+ * 
+ * @param req request
+ *            expect the following POST params
+ *              - mail the email address to authenticate
+ *              - password the user password to authenticate
+ *        res response
+ * @return token  the API key (user id) used for call other APIs
+ */
 router.route('/user/login')
     .post((req, res) => {
         let lowerMail = lowerCase(req.body.mail);
@@ -95,6 +128,19 @@ router.route('/user/login')
         });
     });
 
+/**
+ * router for getting current identifier.
+ * 
+ * Response status
+ *  - 200 success
+ *  - 404 user is not authenticated 
+ * 
+ * @param req request
+ *            expect the following POST params
+ *              - token the token obtained by login
+ *        res response
+ * @return identifier  the current identifier.
+ */
 router.route('/data/currentidentifier')
     .post((req, res) => {
         if (req.body.token) {
@@ -112,6 +158,19 @@ router.route('/data/currentidentifier')
         }
     });
 
+/**
+ * router for getting next identifier.
+ * 
+ * Response status
+ *  - 200 success
+ *  - 404 user is not authenticated 
+ * 
+ * @param req request
+ *            expect the following POST params
+ *              - token the token obtained by login
+ *        res response
+ * @return identifier  the next identifier.
+ */
 router.route('/data/nextidentifier')
     .post((req, res) => {
         if (req.body.token) {
@@ -136,6 +195,20 @@ router.route('/data/nextidentifier')
         }
     });
 
+
+/**
+ * router for reset identifier.
+ * 
+ * Response status
+ *  - 200 success
+ *  - 404 user is not authenticated 
+ * 
+ * @param req request
+ *            expect the following POST params
+ *              - token the token obtained by login
+ *              - resetval the integer value to set
+ *        res response
+ */
 router.route('/data/resetidentifier')
     .post((req, res) => {
         if (req.body.token) {
