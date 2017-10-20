@@ -33,6 +33,32 @@ node server.js
 cd frontend
 npm start
 ```
+*NOTE: Currently frontend server can only listen to port 3000*
 
-### Provided WEB APIs
+## Provided WEB APIs
+### User Login (Require POST param: mail, password)
+* http://localhost:1337/api/user/login
+
+### User Register (Require POST param: mail, password)
 * http://localhost:1337/api/user/register
+
+### Get current identifier (Secured. Require POST param: token)
+* http://localhost:1337/api/data/currentidentifier
+*token can be obtained through login*
+
+### Get next identifier (Secured. Require POST param: token)
+* http://localhost:1337/api/data/nextidentifier
+*token can be obtained through login*
+
+### Reset identifier (Secured. Require POST param: resetval, token)
+* http://localhost:1337/api/data/nextidentifier
+*token can be obtained through login*
+
+
+### Assumptions
+* User email address should be unique in this system, so registering the same email is not allowed.
+* Invalid email address form is not allowed toregister in this system.
+* If necessary, logout feature is implemented in consumer side. (The frontend SAP has it.)
+
+### Known Issues
+* The 
