@@ -2,6 +2,9 @@ import React from "react";
 import request from "superagent";
 import store from "store";
 
+/**
+ * data manipulation component.
+ */
 class Manipulate extends React.Component {
     constructor(props) {
         super(props);
@@ -12,6 +15,9 @@ class Manipulate extends React.Component {
            ,error: ""
         };
     }
+    /**
+     * handle reset button event. POST data to th WEB API server.
+     */
     handleResetSubmit = (e) => {
         e.preventDefault();
 
@@ -36,6 +42,10 @@ class Manipulate extends React.Component {
                 }
             });
     }
+    /**
+     * handle get current indetifier button event.
+     * POST data to th WEB API server.
+     */
     handleCurrentSubmit = (e) => {
         e.preventDefault();
 
@@ -57,6 +67,10 @@ class Manipulate extends React.Component {
  
             });
     }
+    /**
+     * handle get next indetifier button event.
+     * POST data to th WEB API server.
+     */
     handleNextSubmit = (e) => {
         e.preventDefault();
 
@@ -77,16 +91,17 @@ class Manipulate extends React.Component {
                 }
             });
     }
+    /**
+     * track reset text field change
+     */
     handleResetChange = (e) => {
         this.setState({
             resetval: e.target.value
         });
     }
-    handlePassChange = (e) => {
-        this.setState({
-            password: e.target.value
-        });
-    }
+    /**
+     * render UI. Need to get token beforehand to use these features.
+     */
     render() {
         return (
             <div>

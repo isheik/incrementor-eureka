@@ -1,6 +1,9 @@
 import React from "react";
 import store from "store";
 
+/**
+ * Home component
+ */
 const Home = () => (
     <div>
         <h2>Home</h2>

@@ -5,6 +5,9 @@ import Login from "./Login";
 import Register from "./Register";
 import Manipulate from "./Manipulate";
 
+/**
+ * Main component.
+ */
 const Main = () => (
     <main>
         <Switch>

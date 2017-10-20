@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from './logo.jpg';
 
+/**
+ * Header component
+ */
 class Header extends React.Component {
     render(){
         return (

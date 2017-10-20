@@ -2,6 +2,9 @@ import React from "react";
 import request from "superagent";
 import store from "store";
 
+/**
+ * Login component
+ */
 class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -12,6 +15,11 @@ class Register extends React.Component {
            ,token: store.get('token')
         };
     }
+    /**
+     * handle submit event. POST data to th WEB API server.
+     * When successfuly register, store the token provided to
+     * localstrage.
+     */
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -40,22 +48,36 @@ class Register extends React.Component {
                 }
             });
     }
+    /**
+     * track mail text field change
+     */
     handleMailChange = (e) => {
         this.setState({
             mail: e.target.value
         });
     }
+    /**
+     * track password text field change
+     */
     handlePassChange = (e) => {
         this.setState({
             password: e.target.value
         });
     }
+    /**
+     * handle logout button event.
+     */
     logout = (e) => {
         this.setState({
             token: null
         });
         store.remove('token');
     }
+    /**
+     * render UI.
+     * When not authenticated, provide registeration form.
+     * When authenticated, provide logout button.
+     */
     render() {
         return (
             <div>

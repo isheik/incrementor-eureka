@@ -4,6 +4,9 @@ import Header from "./Header";
 import Main from "./Main";
 import './App.css';
 
+/**
+ * application component
+ */
 class App extends React.Component {
   render() {
     return (
