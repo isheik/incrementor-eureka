@@ -3,7 +3,6 @@ import request from "superagent";
 import store from "store";
 
 // TODO: change hostname and port for post
-// TODO: take a look fdsafa case
 class Manipulate extends React.Component {
     constructor(props) {
         super(props);
@@ -17,8 +16,6 @@ class Manipulate extends React.Component {
     handleResetSubmit = (e) => {
         e.preventDefault();
 
-        // TODO: need to implement error handling
-        // TODO: take care of error case (currently error msg returend but should not store it)
         request
             .post('http://localhost:1337/api/data/resetidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -27,6 +24,7 @@ class Manipulate extends React.Component {
                 if (res.status === 200) {
                     this.setState({
                         msg: 'Current identifier:' + res.body
+                       ,error: ""
                     });
                 } else if (res.status === 404) {
                     this.setState({
@@ -34,7 +32,7 @@ class Manipulate extends React.Component {
                     });
                 } else if (res.status === 400) {
                     this.setState({
-                        error: 'Only integer is allowed.'
+                        error: 'Only positive integer is allowed.'
                     });
                 }
             });
@@ -42,8 +40,6 @@ class Manipulate extends React.Component {
     handleCurrentSubmit = (e) => {
         e.preventDefault();
 
-        // TODO: need to implement error handling
-        // TODO: take care of error case (currently error msg returend but should not store it)
         request
             .post('http://localhost:1337/api/data/currentidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -52,6 +48,7 @@ class Manipulate extends React.Component {
                 if (res.status === 200) {
                     this.setState({
                         msg: 'Current identifier:' + res.body
+                       ,error: ""
                     });
                 } else if (res.status === 404) {
                     this.setState({
@@ -64,8 +61,6 @@ class Manipulate extends React.Component {
     handleNextSubmit = (e) => {
         e.preventDefault();
 
-        // TODO: need to implement error handling
-        // TODO: take care of error case (currently error msg returend but should not store it)
         request
             .post('http://localhost:1337/api/data/nextidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -74,6 +69,7 @@ class Manipulate extends React.Component {
                 if (res.status === 200) {
                     this.setState({
                         msg: 'Retrieved identifier:' + res.body
+                       ,error: ""
                     });
                 } else if (res.status === 404) {
                     this.setState({
@@ -103,12 +99,10 @@ class Manipulate extends React.Component {
                 <button type="button" onClick={this.handleNextSubmit}>Get Next</button>
                 </label>
                 {"\n"}
-                <form action="" method="post">
                     <label>Reset identifier:
                     <input type="text" value={this.state.resetval} name="resetval" onChange={this.handleResetChange}/>
-                    <input type="submit" onClick={this.handleResetSubmit}/>
+                    <button type="button" onClick={this.handleResetSubmit}>Reset</button>
                     </label>
-                </form>
                 <div id="msg">{this.state.msg}</div>
                 <div className="error">{this.state.error}</div>
             </div>

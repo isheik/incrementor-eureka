@@ -11,6 +11,7 @@ class Register extends React.Component {
             mail: ""
            ,password: ""
            ,error: ""
+           ,token: store.get('token')
         };
     }
     handleSubmit = (e) => {
@@ -25,7 +26,6 @@ class Register extends React.Component {
             // .send({ mail: this.state.mail, password: this.state.password})
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
-                console.log(res);
                 if (res.status === 200) {
                     store.set('token', res.body);
                     this.setState({
@@ -34,6 +34,10 @@ class Register extends React.Component {
                 } else if (res.status === 404) {
                     this.setState({
                         error: "Invalid email address."
+                    });
+                } else if (res.status === 400) {
+                    this.setState({
+                        error: "The email address is already registered."
                     });
                 }
             });
@@ -48,9 +52,22 @@ class Register extends React.Component {
             password: e.target.value
         });
     }
+    logout = (e) => {
+        this.setState({
+            token: null
+        });
+        store.remove('token');
+    }
     render() {
         return (
             <div>
+                {this.state.token ? (
+                    <div>
+                        <h2>Register</h2>
+                        <p>You are logged in!</p>
+                        <button type="button" onClick={this.logout}>Logout</button>
+                    </div>
+                ) : (
                 <form action="" method="post">
                     <h2>Register</h2>
                     <label>mail:<input type="text" value={this.state.mail}
@@ -60,6 +77,7 @@ class Register extends React.Component {
                     <input type="submit" onClick={this.handleSubmit}/>
                     <p className="error">{this.state.error}</p>
                 </form>
+                )}
             </div>
         );
     }
