@@ -59,6 +59,7 @@ npm start
 
 ### Assumptions
 * User email address should be unique in this system, so registering the same email is not allowed.
+* this system does not allow uppercase email address. It is automatically converted to lowercase.
 * Invalid email address form is not allowed to register in this system.
 * If necessary, logout feature is implemented in consumer side. (The frontend SPA has it.)
 
