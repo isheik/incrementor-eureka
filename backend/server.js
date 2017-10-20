@@ -4,6 +4,7 @@ var settings = require('./setting');
 var app = express();
 var bodyParser = require('body-parser');
 var validator = require('validator');
+var lowerCase = require('lower-case');
 
 // connect DB
 var mongoose = require('mongoose');
@@ -48,21 +49,19 @@ app.use('/api', router);
 app.listen(port);
 console.log('listening port: ' + port);
 
-// TODO: Review error handling and return data.
 // TODO: Password should be crypted.
-// TODO: Check whether email already exists
-// TODO: input validation should be performed in backend too?
 router.route('/user/register')
     .post((req, res) => {
-        User.findOne({ 'mail' : req.body.mail }, (err, user) => {
+        let lowerMail = lowerCase(req.body.mail);
+        User.findOne({ 'mail' : lowerMail }, (err, user) => {
             if (err)
                 res.send(err);
 
             if(user == null) {
-                if (validator.isEmail(req.body.mail)){
+                if (validator.isEmail(lowerMail)){
                     let user = new User();
 
-                    user.mail = req.body.mail;
+                    user.mail = lowerMail;
                     user.password = req.body.password;
                     user.identifier = 0;
 
@@ -82,29 +81,10 @@ router.route('/user/register')
         });
    });
 
-// TODO: DEL this API gets all users.
-router.route('/user/all')
-    .get((req, res) => {
-        User.find((err, users) => {
-            if(err)
-                res.send(err);
-            res.setHeader('Content-Type', 'application/vnd.api+json');
-            res.status(200).json(users);
-        });
-    });
-
-// TODO: handle email upper and lower cases
-// TODO: input validation should be performed in backend too?
-/**
- * Returns for each case
- * err: return err page
- * no user found OR
- * password unmatch: return message
- * else: return user token(id)
- */
 router.route('/user/login')
     .post((req, res) => {
-        User.findOne({ 'mail' : req.body.mail }, (err, user) => {
+        let lowerMail = lowerCase(req.body.mail);
+        User.findOne({ 'mail' : lowerMail }, (err, user) => {
             if (err)
                 res.send(err);
             else if (user == null || req.body.password != user.password)
@@ -132,9 +112,6 @@ router.route('/data/currentidentifier')
         }
     });
 
-// TODO: fix CastError for ObjectID.
-// When token is defined but not proper format of _id, then cause castError
-// But not terminate Node.js
 router.route('/data/nextidentifier')
     .post((req, res) => {
         if (req.body.token) {
@@ -159,9 +136,6 @@ router.route('/data/nextidentifier')
         }
     });
 
-// TODO: fix CastError for ObjectID.
-// When token is defined but not proper format of _id, then cause castError
-// But not terminate Node.js
 router.route('/data/resetidentifier')
     .post((req, res) => {
         if (req.body.token) {

@@ -2,7 +2,6 @@ import React from "react";
 import request from "superagent";
 import store from "store";
 
-// TODO: change hostname and port for post
 class Manipulate extends React.Component {
     constructor(props) {
         super(props);

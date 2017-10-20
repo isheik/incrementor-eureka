@@ -7,7 +7,6 @@ class Header extends React.Component {
         return (
         <header className='app-header'>
             <img id="logo" src={logo} className="app-logo" alt="logo" />
-            {/* <img src={'../pictures/logo.jpg'}/> */}
             <h1 id="title">incrementor eureka</h1>
             
             <nav className='app-global-nav'>

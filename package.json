@@ -12,6 +12,7 @@
     "body-parser": "^1.18.2",
     "create-react-app": "^1.4.1",
     "express": "^4.16.2",
+    "lower-case": "^1.1.4",
     "mongoose": "^4.12.3",
     "validator": "^9.0.0"
   },

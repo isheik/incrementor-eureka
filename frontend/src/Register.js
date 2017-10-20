@@ -2,8 +2,6 @@ import React from "react";
 import request from "superagent";
 import store from "store";
 
-// TODO: input validation
-// TODO: !!!!introduce local storage!!!!!
 class Register extends React.Component {
     constructor(props) {
         super(props);
