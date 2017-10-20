@@ -1,1 +1,0 @@
-exports.host = 'localhost';
