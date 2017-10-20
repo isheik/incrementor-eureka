@@ -2,8 +2,10 @@ import React from "react";
 import store from "store";
 
 const Home = () => (
-    <div>HOME
-        {console.log(store.get('token'))}
+    <div>
+        <h2>Home</h2>
+        <p>Welcome to incrementor!</p>
+        <p>Please login or register to manipulate identifier.</p>
     </div>
 );
 

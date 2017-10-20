@@ -3,6 +3,7 @@ var express = require('express');
 var settings = require('./setting');
 var app = express();
 var bodyParser = require('body-parser');
+// var validator = require('validator');
 
 // connect DB
 var mongoose = require('mongoose');
@@ -35,7 +36,6 @@ var port = process.env.PORT || settings.port;
 var router = express.Router();
 
 router.use((req, res, next) => {
-    console.log('test');
     next();
 });
 
@@ -57,11 +57,13 @@ console.log('listening port: ' + port);
  */
 router.route('/user/register')
     .post((req, res) => {
+        console.log(req);
+        // if (!(validator.isEmail(req.body.mail)))
+        //     res.status(404).json();
+
         var user = new User();
 
-        // user.data.type = "user";
         user.mail = req.body.mail;
-        // user.mail = req.body.mail;
         user.password = req.body.password;
         user.identifier = 0;
 
@@ -70,7 +72,7 @@ router.route('/user/register')
                 res.send(err);
 
             res.setHeader('Content-Type', 'application/vnd.api+json');
-            res.status(200).json(user);
+            res.status(200).json(user_id);
         });
     });
 
@@ -100,7 +102,7 @@ router.route('/user/login')
             if (err)
                 res.send(err);
             else if (user == null || req.body.password != user.password)
-                res.status(404).send('Wrong user id or password.');
+                res.status(404).send();
             else
                 // res.setHeader('Content-Type', 'application/vnd.api+json');
                 res.status(200).json(user._id);
@@ -109,11 +111,14 @@ router.route('/user/login')
 
 router.route('/data/currentidentifier')
     .post((req, res) => {
+        // if (!req.body.token)
+        //     res.status(404).send();
+
         User.findOne({'_id' : req.body.token }, (err, user) => {
             if (err)
                 res.send(err);
             else if (user == null)
-                res.send({ message: 'Please login first.' });
+                res.status(404).send();
             else 
                 // res.setHeader('Content-Type', 'application/vnd.api+json');
                 res.status(200).json(user.identifier);
@@ -125,11 +130,14 @@ router.route('/data/currentidentifier')
 // But not terminate Node.js
 router.route('/data/nextidentifier')
     .post((req, res) => {
+        // if (!req.body.token)
+        //     res.status(404).send();
+
         User.findOne({'_id' : req.body.token }, (err, user) => {
             if (err)
                 res.send(err);
             else if (user == null)
-                res.send({ message: 'Please login first.' });
+                res.status(404).send();
             else {
                 user.identifier = user.identifier + 1;
                 user.save(err => {
@@ -148,14 +156,18 @@ router.route('/data/nextidentifier')
 // But not terminate Node.js
 router.route('/data/resetidentifier')
     .post((req, res) => {
+        // if (req.body.token == null)
+        //     res.status(404).send();
+        
+        // if (!validator.isInt(req.body.resetval))
+        //     res.status(400).send();
+
         User.findOne({'_id' : req.body.token }, (err, user) => {
             if (err)
                 res.send(err);
             else if (user == null)
-                res.send({ message: 'Please login first.' });
-            else if (req.body.resetval == undefined) 
-                res.send({ message: 'Reset value is not set.'});
-            else if (req.body.resetval <= 0)
+                res.status(404).send();
+            else if (req.body.resetval <= 0 || isNaN(req.body.resetval))
                 res.send({ message: 'Reset value has to be positive number.'});
             else {
                 user.identifier = req.body.resetval;

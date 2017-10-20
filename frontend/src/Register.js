@@ -1,12 +1,17 @@
 import React from "react";
 import request from "superagent";
+import store from "store";
 
 // TODO: input validation
 // TODO: !!!!introduce local storage!!!!!
 class Register extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {mail: "", password: ""};
+        this.state = {
+            mail: ""
+           ,password: ""
+           ,error: ""
+        };
     }
     handleSubmit = (e) => {
         e.preventDefault();
@@ -20,7 +25,16 @@ class Register extends React.Component {
             // .send({ mail: this.state.mail, password: this.state.password})
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
-                console.log(res.body._id);
+                if (res.status === 200) {
+                    store.set('token', res.body);
+                    this.setState({
+                        token: res.body
+                    });
+                } else if (res.status === 404) {
+                    this.setState({
+                        error: "Invalid email address."
+                    });
+                }
             });
     }
     handleMailChange = (e) => {
@@ -37,14 +51,13 @@ class Register extends React.Component {
         return (
             <div>
                 <form action="" method="post">
-                    <p>Register </p>
-                    <p>mail</p>
-                    {/* <input type="text" name="mail"/> */}
-                    <input type="text" value={this.state.mail} name="mail" onChange={this.handleMailChange}/>
-                    <p>password</p>
-                    {/* <input type="text" name="password"/> */}
-                    <input type="password" value={this.state.password} name="password" onChange={this.handlePassChange}/>
+                    <h2>Register</h2>
+                    <label>mail:<input type="text" value={this.state.mail}
+                        name="mail" onChange={this.handleMailChange}/></label>
+                    <label>password:<input type="password" value={this.state.password} 
+                        name="password" onChange={this.handlePassChange}/></label>
                     <input type="submit" onClick={this.handleSubmit}/>
+                    <p className="error">{this.state.error}</p>
                 </form>
             </div>
         );

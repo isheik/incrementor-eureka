@@ -7,7 +7,12 @@ import store from "store";
 class Manipulate extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {resetval: ""};
+        this.state = {
+            resetval: ""
+           ,token: store.get('token')
+           ,msg: ""
+           ,error: ""
+        };
     }
     handleResetSubmit = (e) => {
         e.preventDefault();
@@ -17,9 +22,21 @@ class Manipulate extends React.Component {
         request
             .post('http://localhost:1337/api/data/resetidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ resetval: this.state.resetval, token: store.get('token')})
+            .send({ resetval: this.state.resetval, token: this.state.token})
             .end((err, res) => {
-                console.log(res.body);
+                if (res.status === 200) {
+                    this.setState({
+                        msg: 'Current identifier:' + res.body
+                    });
+                } else if (res.status === 404) {
+                    this.setState({
+                        error: 'Please login first.'
+                    });
+                } else if (res.status === 400) {
+                    this.setState({
+                        error: 'Only integer is allowed.'
+                    });
+                }
             });
     }
     handleCurrentSubmit = (e) => {
@@ -30,9 +47,18 @@ class Manipulate extends React.Component {
         request
             .post('http://localhost:1337/api/data/currentidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ token: store.get('token')})
+            .send({ token: this.state.token})
             .end((err, res) => {
-                console.log(res.body);
+                if (res.status === 200) {
+                    this.setState({
+                        msg: 'Current identifier:' + res.body
+                    });
+                } else if (res.status === 404) {
+                    this.setState({
+                        error: 'Please login first.'
+                    });
+                }
+ 
             });
     }
     handleNextSubmit = (e) => {
@@ -43,9 +69,17 @@ class Manipulate extends React.Component {
         request
             .post('http://localhost:1337/api/data/nextidentifier')
             .set('Content-Type', 'application/x-www-form-urlencoded')
-            .send({ token: store.get('token')})
+            .send({ token: this.state.token})
             .end((err, res) => {
-                console.log(res.body);
+                if (res.status === 200) {
+                    this.setState({
+                        msg: 'Retrieved identifier:' + res.body
+                    });
+                } else if (res.status === 404) {
+                    this.setState({
+                        error: 'Please login first.'
+                    });
+                }
             });
     }
     handleResetChange = (e) => {
@@ -61,20 +95,22 @@ class Manipulate extends React.Component {
     render() {
         return (
             <div>
-                <p>Reset identifier or Get current identifier </p>
+                <h2>Set or Get identifier </h2>
+                <label>Get current identifier:
+                <button type="button" onClick={this.handleCurrentSubmit}>Get Current</button>
+                </label>
+                <label>Get next identifier:
+                <button type="button" onClick={this.handleNextSubmit}>Get Next</button>
+                </label>
+                {"\n"}
                 <form action="" method="post">
-                    <p>Reset identifier</p>
+                    <label>Reset identifier:
                     <input type="text" value={this.state.resetval} name="resetval" onChange={this.handleResetChange}/>
                     <input type="submit" onClick={this.handleResetSubmit}/>
+                    </label>
                 </form>
-                <form action="" method="post">
-                    <p>Get current identifier</p>
-                    <input type="submit" onClick={this.handleCurrentSubmit}/>
-                </form>
-                <form action="" method="post">
-                    <p>Get next identifier</p>
-                    <input type="submit" onClick={this.handleNextSubmit}/>
-                </form>
+                <div id="msg">{this.state.msg}</div>
+                <div className="error">{this.state.error}</div>
             </div>
         );
     }

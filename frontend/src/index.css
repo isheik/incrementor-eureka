@@ -1,10 +1,20 @@
+html {
+  margin: 0;
+  padding: 0;
+}
 body {
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+div {
+  margin: 0;
+  padding: 0;
+}
+p {
+  font-size: 20px;
+}
+.main-wrapper {
+  width: 100%;
 }
 
-nav ul {
-}
-nav ul li{
-  display: inline-block;
-  padding-right: 5px;
-}

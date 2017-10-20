@@ -1,28 +1,76 @@
-.App {
+.app-header {
+    background-color: white;
+    height: 120px;
+    width: 100%;
+    /* padding: 20px; */
+    color: green;
+    margin: 0 auto;
+}
+
+.header-wrapper {
+    margin: 0 auto;
+}
+
+.app-global-nav {
+    clear: both;
+    position: absolute;
+    right: 0;
+    padding-top: 35px;
+    font-size: 18px;
+}
+
+.app-nav-menu {
+    display: flex;
+    margin: 0;
+}
+.app-global-nav .app-nav-items {
+    display: inline-block;
+    color: green;
+}
+.app-global-nav .app-nav-items a {
+    text-decoration: none;
+    color: rgb(104, 158, 104);
+    padding-right: 20px;
+}
+
+#title {
+    float: left;
+    font-family: URW Chancery L, cursive;
+    padding-left: 10px;
+}
+
+#logo {
+    /* position: relative; */
+    float: left;
+    height: 100px;
+    width: auto;
+    padding-top: 5px;
+}
+
+.error {
+    color: red;
+}
+
+#msg {
+    color: green;
+}
+
+main {
   text-align: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+label {
+  margin-right: 10px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+h2 {
+    font-size: 30px;
+    color: green;
+    font-family: URW Chancery L, cursive;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+label {
+  margin-bottom: 20px;
 }
