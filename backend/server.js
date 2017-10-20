@@ -52,16 +52,11 @@ console.log('listening port: ' + port);
 // TODO: Password should be crypted.
 // TODO: Check whether email already exists
 // TODO: input validation should be performed in backend too?
-/**
- * @return token(id)
- */
 router.route('/user/register')
     .post((req, res) => {
-        console.log(req);
         // if (!(validator.isEmail(req.body.mail)))
         //     res.status(404).json();
-
-        var user = new User();
+        let user = new User();
 
         user.mail = req.body.mail;
         user.password = req.body.password;
@@ -71,8 +66,8 @@ router.route('/user/register')
             if(err)
                 res.send(err);
 
-            res.setHeader('Content-Type', 'application/vnd.api+json');
-            res.status(200).json(user_id);
+            // res.setHeader('Content-Type', 'application/vnd.api+json');
+            res.status(200).json(user._id);
         });
     });
 

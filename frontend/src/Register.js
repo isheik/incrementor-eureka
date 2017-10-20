@@ -25,6 +25,7 @@ class Register extends React.Component {
             // .send({ mail: this.state.mail, password: this.state.password})
             .send({ mail: this.state.mail, password: this.state.password})
             .end((err, res) => {
+                console.log(res);
                 if (res.status === 200) {
                     store.set('token', res.body);
                     this.setState({
