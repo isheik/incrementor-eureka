@@ -60,7 +60,7 @@ npm start
 ### Assumptions
 * User email address should be unique in this system, so registering the same email is not allowed.
 * Invalid email address form is not allowed to register in this system.
-* If necessary, logout feature is implemented in consumer side. (The frontend SAP has it.)
+* If necessary, logout feature is implemented in consumer side. (The frontend SPA has it.)
 
 ### Known Issues
 * This service has not been able to follow JSON API specs very well.
